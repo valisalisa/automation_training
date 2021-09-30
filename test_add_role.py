@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -9,24 +12,22 @@ import unittest, time, re
 
 class TestAddRole(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.driver.implicitly_wait(30)
-    
+
     def test_add_role(self):
         driver = self.driver
         # Label: Test
         # ERROR: Caught exception [ERROR: Unsupported command [resizeWindow | 1280,609 | ]]
         driver.get("http://10.70.36.234/#/login")
-        driver.find_element_by_css_selector("div.mx-auto.my-12.card.v-card.v-sheet.theme--light").click()
         driver.find_element_by_id("auth-login-field-username").click()
         driver.find_element_by_id("auth-login-field-username").clear()
         driver.find_element_by_id("auth-login-field-username").send_keys("test")
+        driver.find_element_by_css_selector("div.v-card__title.card__title.mb-2").click()
+        driver.find_element_by_id("auth-login-field-password").click()
         driver.find_element_by_id("auth-login-field-password").clear()
         driver.find_element_by_id("auth-login-field-password").send_keys("123")
-        driver.find_element_by_id("auth-login-field-password").clear()
-        driver.find_element_by_id("auth-login-field-password").send_keys("123")
-        driver.find_element_by_id("auth-login-btn-submit").click()
-        driver.find_element_by_xpath("//section[@id='main-wrapper']/nav/div/div[2]/div[2]/div[2]/div/div/div[2]").click()
+        driver.find_element_by_css_selector("span.v-btn__content").click()
         driver.find_element_by_css_selector("#main-layout-navigation-user_roles > div.v-list-item__content > div.v-list-item__title").click()
         driver.find_element_by_css_selector("button.v-btn.v-btn--is-elevated.v-btn--has-bg.theme--light.v-size--default > span.v-btn__content").click()
         driver.find_element_by_id("input-469").click()
@@ -46,10 +47,7 @@ class TestAddRole(unittest.TestCase):
         except NoAlertPresentException as e: return False
         return True
 
-
-    
     def tearDown(self):
         self.driver.quit()
 
-if __name__ == "__main__":
-    unittest.main()
+
